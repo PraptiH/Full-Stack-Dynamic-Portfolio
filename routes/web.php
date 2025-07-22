@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +26,28 @@ Route::get('/about', function () {
 });
 Route::get('/home', function () {
     return view('home');
+});
+Route::get('/login', function () {
+    return view('auth.login');
+});
+Route::post('/login', function () {
+    return view('auth.login');
+});
+Route::get('/registration', function () {
+    return view('auth.registration');
+});
+Route::post('/registration', function () {
+    return view('auth.registration');
+});
+
+Route::post('/login', [App\Http\Controllers\AuthenticationController::class, 'login']);
+Route::post('/registration', [App\Http\Controllers\AuthenticationController::class, 'registration']);
+
+Route::middleware('auth')->group(function(){
+    Route::get('/admin/dashboard', [Controller::class, 'dashboard']);
+});
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
 });
